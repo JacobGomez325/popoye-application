@@ -1,7 +1,10 @@
-version: '3'
+version: "3"
 services:
   pool:
-    dockerfile: ./poll/Dockerfile
+    build:
+      context: ./
+      dockerfile: ./poll/Dockerfile
+    container_name: poll
     ports:
       - 5000:80
   redis:
@@ -9,10 +12,20 @@ services:
     ports:
       - 6379:6379
   worker:
-    dockerfile: ./worker/Dockerfile
+    build:
+      context: ./
+      dockerfile: ./worker/Dockerfile
+    container_name: worker
+    depends_on:
+      - redis
   db:
     image: postgres
   result:
-    dockerfile: ./result/Dockerfile
+    build: 
+      context: ./
+      dockerfile: ./result/Dockerfile
+    container_name: result
     ports:
       - 5001:80
+    depends_on:
+      - db
