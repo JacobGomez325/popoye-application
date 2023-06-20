@@ -1,6 +1,9 @@
-FROM python
+FROM python:3
 WORKDIR /app
-COPY . .
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
-EXPOSE 80
-CMD [ "flask run", "--host=0.0.0.0" ,"--port=80"]
+COPY . .
+ENV PORT=80
+ENV HOST=0.0.0.0
+EXPOSE $PORT
+CMD [ "flask run", `--host=${HOST}` ,`--port=${PORT}`]
